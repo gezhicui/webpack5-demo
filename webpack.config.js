@@ -18,13 +18,15 @@ const config = {
           1、less-loader处理less文件
           2、postcss-loader自动添加 CSS3 部分属性的浏览器前缀
           3、css-loader可以处理样式文件
-          4、style-loader可以将样式加载到页面上核心逻辑相当于
-          const content = `${样式内容}`
-          const style = document.createElement('style');
-          style.innerHTML = content;
-          document.head.appendChild(style);
+          4、MiniCssExtractPlugin.loader用来替代style-loader，把css抽离出js，并自动在html使用link引入
         */
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
+        use: [
+          // 'style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'less-loader',
+        ],
       },
     ],
   },
@@ -32,6 +34,10 @@ const config = {
     // 配置插件
     new HtmlWebpackPlugin({
       template: './src/index.html',
+    }),
+    new MiniCssExtractPlugin({
+      // 分离css样式文件
+      filename: '[name].[hash:8].css',
     }),
   ],
   devServer: {
