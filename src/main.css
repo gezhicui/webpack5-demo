@@ -10,3 +10,9 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+#imgBox {
+  height: 400px;
+  width: 400px;
+  /* background: url('../public/logo.png'); */
+  background-size: contain;
+}

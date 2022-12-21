@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV); // 打印环境变量
@@ -28,9 +29,35 @@ const config = {
           'less-loader',
         ],
       },
+      {
+        test: /\.(jpg|png|jpeg|gif|svg)$/,
+        type: 'asset',
+        generator: {
+          filename: 'image/[name].[hash:8][ext]',
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024,
+          },
+        },
+      },
+      {
+        test: /\.js$/i,
+        use: [
+          {
+            //使用 Babel 加载 ES2015+ 代码并将其转换为 ES5
+            loader: 'babel-loader',
+            options: {
+              // @babel/preset-env : Babel 编译的预设，可以理解为 Babel 插件的超集
+              presets: ['@babel/preset-env'],
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(), // 引入插件
     // 配置插件
     new HtmlWebpackPlugin({
       template: './src/index.html',
