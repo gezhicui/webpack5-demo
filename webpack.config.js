@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV); // 打印环境变量
 
@@ -12,8 +13,18 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.css$/, //匹配所有的 css 文件
-        use: 'css-loader', // use: 对应的 Loader 名称
+        test: /\.(css|less)$/, //匹配所有的 css和less 文件
+        /* 
+          1、less-loader处理less文件
+          2、postcss-loader自动添加 CSS3 部分属性的浏览器前缀
+          3、css-loader可以处理样式文件
+          4、style-loader可以将样式加载到页面上核心逻辑相当于
+          const content = `${样式内容}`
+          const style = document.createElement('style');
+          style.innerHTML = content;
+          document.head.appendChild(style);
+        */
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
       },
     ],
   },
@@ -24,9 +35,9 @@ const config = {
     }),
   ],
   devServer: {
+    // webpack 在进行打包的时候，对静态文件的处理，例如图片，都是直接 copy 到 dist 目录下面。但是对于本地开发来说，这个过程太费时，也没有必要，所以在设置 contentBase 之后，就直接到对应的静态目录下面去读取文件，而不需对文件做任何移动，节省了时间和性能开销。
     static: {
       directory: path.join(__dirname, 'public'),
-      publicPath: '/img',
     },
     //启动gzip压缩
     compress: true,
