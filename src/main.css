@@ -16,3 +16,7 @@ body {
   /* background: url('../public/logo.png'); */
   background-size: contain;
 }
+#testClear {
+  height: 100px;
+  width: 100px;
+}

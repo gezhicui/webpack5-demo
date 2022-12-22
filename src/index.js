@@ -1,9 +1,8 @@
 // ./ index.js
 
 import './main.css';
-import './less.less';
+// import './less.less';
 import logo from '../public/logo.png';
-
 
 const a = 'Hello ITEM';
 console.log(a);
